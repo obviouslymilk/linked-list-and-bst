@@ -99,6 +99,4 @@ class LinkedList {
 const list = new LinkedList(new Node(1));
 list.prepend(3);
 list.append(15);
-list.append(6);
-list.pop();
 console.log(list.toString());
