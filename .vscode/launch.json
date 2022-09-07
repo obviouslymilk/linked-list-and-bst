@@ -11,7 +11,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\linked-list.js",
+            "program": "${workspaceFolder}\\bst.js",
             "console": "internalConsole"
         }
     ]
