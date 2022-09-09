@@ -115,10 +115,10 @@ class Tree {
     return node;
   }
 
-  levelOrder(callback) {
+  levelOrder(callback, root = this.root) {
     let queue = []
     let values = []
-    queue.unshift(this.root);
+    queue.unshift(root);
 
     while (queue.length > 0) {
       let node = queue[queue.length - 1];
@@ -177,6 +177,32 @@ class Tree {
       this.postorder(callback, node.right);
       callback(node);
   }
+  
+  height(root = this.root) {
+    let height = 0;
+    let queue = [root];
+
+    while (queue.length > 0) {
+
+      let size = queue.length;
+
+      while (size--) {
+        let node = queue[queue.length - 1];
+        queue.pop();
+        if (node.left)
+          queue.unshift(node.left);
+        if (node.right)
+          queue.unshift(node.right);      
+      }
+      height++;
+    }
+
+    return height;
+  }
+
+  isBalanced(root = this.root) {
+    return Math.abs(this.height(root.left) - this.height(root.right)) <= 1
+  }
 }
 
 const prettyPrint = (node, prefix = '', isLeft = true) => {
@@ -190,6 +216,7 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 }
 
 let tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-tree.delete(1);
+tree.insert(2);
+tree.insert(123);
 prettyPrint(tree.root);
-tree.preorder((node) => console.log(node.data));
+console.log(tree.isBalanced());
