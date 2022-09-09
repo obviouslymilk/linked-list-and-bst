@@ -73,28 +73,26 @@ class Tree {
   }
 
   deleteRecursive(root, value) {
-    let node = root;
-
-    if (node === null) {
-      return node;
+    if (root === null) {
+      return root;
     }
 
-    if (value < node.data)
-      node.left = this.deleteRecursive(node.left, value);
-    else if (value > node.data)
-      node.right = this.deleteRecursive(node.right, value);
+    if (value < root.data)
+      root.left = this.deleteRecursive(root.left, value);
+    else if (value > root.data)
+      root.right = this.deleteRecursive(root.right, value);
     else {
-      if (node.left == null)
-        return node.right;
-      else if (node.right == null)
-        return node.left;
+      if (root.left == null)
+        return root.right;
+      else if (root.right == null)
+        return root.left;
       
-      node.data = this.min(node.right); // inorder successor
+      root.data = this.min(root.right); // inorder successor
 
-      node.right = this.deleteRecursive(node.right, node.data);
+      root.right = this.deleteRecursive(root.right, root.data);
     }
 
-    return node;
+    return root;
   }
 
   delete(value) {
@@ -102,17 +100,15 @@ class Tree {
   }
 
   find(value, root = this.root) {
-    let node = root;
+    if (root == null)
+      return root;
 
-    if (node == null)
-      return node;
+    if (value < root.data)
+      root = this.find(value, root.left);
+    else if (value > root.data)
+      root = this.find(value, root.right);
 
-    if (value < node.data)
-      node = this.find(value, node.left);
-    else if (value > node.data)
-      node = this.find(value, node.right);
-
-    return node;
+    return root;
   }
 
   levelOrder(callback, root = this.root) {
@@ -140,42 +136,36 @@ class Tree {
   }
 
   inorder(callback, root = this.root) {
-    let node = root;
+    if (root === null)
+      return root;
 
-    if (node === null)
-      return node;
-
-    if (node.left)
-      this.inorder(callback, node.left);
-    callback(node);
-    if (node.right)
-      this.inorder(callback, node.right);
+    if (root.left)
+      this.inorder(callback, root.left);
+    callback(root);
+    if (root.right)
+      this.inorder(callback, root.right);
   }
 
   preorder(callback, root = this.root) {
-    let node = root;
+    if (root === null)
+      return root;
 
-    if (node === null)
-      return node;
-
-    callback(node);
-    if (node.left)
-      this.preorder(callback, node.left);
-    if (node.right)
-      this.preorder(callback, node.right);
+    callback(root);
+    if (root.left)
+      this.preorder(callback, root.left);
+    if (root.right)
+      this.preorder(callback, root.right);
   }
 
   postorder(callback, root = this.root) {
-    let node = root;
+    if (root === null)
+      return root;
 
-    if (node === null)
-      return node;
-
-    if (node.left)
-      this.postorder(callback, node.left);
-    if (node.right)
-      this.postorder(callback, node.right);
-      callback(node);
+    if (root.left)
+      this.postorder(callback, root.left);
+    if (root.right)
+      this.postorder(callback, root.right);
+      callback(root);
   }
   
   height(root = this.root) {
@@ -200,6 +190,25 @@ class Tree {
     return height;
   }
 
+  depth(value, root = this.root) {
+    let depth = 0;
+
+    if (root == null)
+      return 0;
+
+    if (value < root.data) {
+      depth = this.depth(value, root.left);
+      depth++;
+    }
+      
+    else if (value > root.data) {
+      depth = this.depth(value, root.right);
+      depth++;
+    }
+
+    return depth;   
+  }
+
   isBalanced(root = this.root) {
     return Math.abs(this.height(root.left) - this.height(root.right)) <= 1
   }
@@ -219,4 +228,3 @@ let tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 tree.insert(2);
 tree.insert(123);
 prettyPrint(tree.root);
-console.log(tree.isBalanced());
